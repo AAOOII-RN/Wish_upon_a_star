@@ -1,4 +1,4 @@
-local wf = require "libraries.windfield"
+local wf = require "windfield"
 
 function love.load()
     -- Window properties
@@ -26,6 +26,12 @@ function love.load()
     --y = 0
     n = -180 -- star's revolution
     ww, wh = love.graphics.getDimensions() -- window size
+
+    Ground = World:newRectangleCollider(0, wh-40, ww, 40)
+    Ground:setType("static")
+
+    Ball = World:newCircleCollider(ww/2, wh/2, 20)
+    Ball:setRestitution(1)
 end
 
 function calculate_point(m) -- determines the points of a star
@@ -41,11 +47,13 @@ function calculate_point(m) -- determines the points of a star
 end
 
 function love.update(dt)
+    World:update(dt)
     local speed = 10
     n = n + 36 * dt
 end
 
 function love.draw()
+    World:draw()
     --star
     love.graphics.setBackgroundColor(4/255, 26/255, 64/255)
     love.graphics.setColor(255/255, 255/255, 127.5/255)
