@@ -5,7 +5,8 @@ function love.load()
     love.window.setTitle("Wish Upon A Star - By: AAOOII-RN")
 
     -- Physics World
-    -- Yo wassup
+    World = wf.newWorld()
+    World:setGravity(0, 640)
 
     --forming a star
     ax, ay = calculate_point(0)
