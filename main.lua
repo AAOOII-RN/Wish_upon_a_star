@@ -1,5 +1,11 @@
+local wf = require "libraries.windfield"
+
 function love.load()
+    -- Window properties
     love.window.setTitle("Wish Upon A Star - By: AAOOII-RN")
+
+    -- Physics World
+    -- Yo wassup
 
     --forming a star
     ax, ay = calculate_point(0)
