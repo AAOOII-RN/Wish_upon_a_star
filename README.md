@@ -1,5 +1,5 @@
 # Wish upon a star ✨ (In progress! 🛠)
-- A shooting star will fulfill **some** of your wishes. 😉
+- A shooting star that will fulfill **some** of your wishes. 😉
 
 # AAOOII, what am I supposed to do in this program? 😕😕
 1. Wait 'till a shooting star appears on the screen.
