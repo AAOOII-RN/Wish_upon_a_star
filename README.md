@@ -1,8 +1,7 @@
-# Wish upon a star ✨ (In progress! 🛠)
+# Wish upon a star ✨
 - A shooting star that will fulfill **some** of your wishes. 😉
 
 # AAOOII, what am I supposed to do in this program? 😕😕
-**This function is still in progress! 🛠**
 1. Wait 'till a shooting star appears on the screen.
 2. Once the shooting star appears, quickly type your wish in the box. Expect less. The program can only fulfill wishes such as **circle** and **square**.
 3. If you have typed either a **circle** or a **square** on the box, that shape will appear, fall on the ground, and bounce forever. If not, the program will... 🤷‍♀️ you off.
