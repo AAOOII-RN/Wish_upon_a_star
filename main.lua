@@ -57,8 +57,6 @@ function love.load()
     show_txtBox = false
 
     shrugger = false
-
-    love.keyboard.setKeyRepeat(true)
 end
 
 function love.textinput(t)
@@ -73,7 +71,7 @@ function love.keypressed(key)
             local byteoffset = utf8.offset(input_text, -1)
     
             if byteoffset then
-                input_text = string.sub(input_text, 1, byteoffset - 1)
+                input_text = string.sub(input_text, 1, byteoffset - font:getWidth(input_text))
             end
         end
     
@@ -180,6 +178,7 @@ function love.draw()
     love.graphics.setColor(1, 0, 0)
     for i, v in ipairs(cv) do
         love.graphics.circle("fill", circle_group[i]:getX(), circle_group[i]:getY(), cv[i])
+        circle_group[i]:setRestitution(1)
     end
 
     -- draw square
@@ -187,6 +186,7 @@ function love.draw()
     for i, v in ipairs(sv) do
         love.graphics.rectangle("fill", square_group[i]:getX()-sv[i]/2, square_group[i]:getY()-sv[i]/2, sv[i], sv[i])
         square_group[i]:setFixedRotation(true)
+        square_group[i]:setRestitution(1)
     end
 
     -- input
@@ -198,7 +198,7 @@ function love.draw()
         local say_this = "Type your wish then enter it quick!"
         love.graphics.print(say_this, ww/2-font:getWidth(say_this)/2, (wh/2)-50)
         if shrugger then
-            local say_this2 = "¯\\_(o v o)_/¯"
+            local say_this2 = "Lol can't do that ¯\\_(o v o)_/¯"
             love.graphics.print(say_this2, ww/2-font:getWidth(say_this2)/2, (wh/2)+50)
         end
     end
