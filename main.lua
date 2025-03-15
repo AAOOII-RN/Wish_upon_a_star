@@ -1,5 +1,4 @@
 local wf = require "libraries.windfield"
-local utf8 = require "utf8"
 
 function love.load()
     -- Window properties
@@ -11,7 +10,7 @@ function love.load()
 
     -- Physics World
     World = wf.newWorld()
-    World:setGravity(0, 640)
+    World:setGravity(0, 20)
 
     --forming a star
     ax, ay = calculate_point(0)
@@ -32,7 +31,7 @@ function love.load()
     ww, wh = love.graphics.getDimensions() -- window size
 
     -- Barriers
-    Ground = World:newRectangleCollider(0, wh-40, ww, 40)
+    Ground = World:newRectangleCollider(0, wh, ww, 40)
     Ground:setType("static")
 
     Left_Wall = World:newRectangleCollider(-30, 0, 30, wh)
@@ -57,6 +56,10 @@ function love.load()
     show_txtBox = false
 
     shrugger = false
+
+    oneWish = true
+
+    bg = love.graphics.newImage("textures/night.png")
 end
 
 function love.textinput(t)
@@ -68,11 +71,7 @@ end
 function love.keypressed(key)
     if show_txtBox then
         if key == "backspace" then
-            local byteoffset = utf8.offset(input_text, -1)
-    
-            if byteoffset then
-                input_text = string.sub(input_text, 1, byteoffset - font:getWidth(input_text))
-            end
+            input_text = ""
         end
     
         if key == "return" then
@@ -98,9 +97,11 @@ function checkWish() -- checks wish obv
     local wish = string.lower(input_text)
     
     if wish == "circle" then
-        isCircle()
+        if oneWish then isCircle() end
+        oneWish = false
     elseif wish == "square" then
-        isSquare()
+        if oneWish then isSquare() end
+        oneWish = false
     else
         shrug()
     end
@@ -146,17 +147,20 @@ function love.update(dt)
         end
     end
 
-    show_txtBox = false
-    if n > 0 and n < 45 then
+    show_txtBox = not false
+    if n > 0 and n < 45 then -- star in screen
         show_txtBox = true
-    else
+    else -- star out of screen
         shrugger = false
+        oneWish = true
     end
 end
 
 function love.draw()
+    love.graphics.setColor(0.75,0.75,0.75)
+    love.graphics.draw(bg, 0, 0, 0, 0.75, 0.75)
+
     -- star
-    love.graphics.setBackgroundColor(4/255, 26/255, 64/255)
     love.graphics.setColor(255/255, 255/255, 127.5/255)
     love.graphics.push()
         love.graphics.translate(0, wh*2) -- center point of rotation
@@ -166,23 +170,15 @@ function love.draw()
         love.graphics.polygon("line", vertices)
     love.graphics.pop()
 
-    -- grass
-    love.graphics.setColor(0, 127.5/255, 0)
-    love.graphics.rectangle("fill", 0, wh, ww, -40)
-
-    -- dirt
-    love.graphics.setColor(75/250, 37.5/250, 0)
-    love.graphics.rectangle("fill", 0, wh, ww, -15)
-
     -- draw cricle
-    love.graphics.setColor(1, 0, 0)
+    love.graphics.setColor(0.3, 0.3, 0.5)
     for i, v in ipairs(cv) do
         love.graphics.circle("fill", circle_group[i]:getX(), circle_group[i]:getY(), cv[i])
         circle_group[i]:setRestitution(1)
     end
 
     -- draw square
-    love.graphics.setColor(0, 0, 1)
+    love.graphics.setColor(0.25, 0.25, 0.75)
     for i, v in ipairs(sv) do
         love.graphics.rectangle("fill", square_group[i]:getX()-sv[i]/2, square_group[i]:getY()-sv[i]/2, sv[i], sv[i])
         square_group[i]:setFixedRotation(true)
@@ -191,7 +187,7 @@ function love.draw()
 
     -- input
     if show_txtBox then
-        love.graphics.setColor(0.5, 0.5, 0.5)
+        love.graphics.setColor(0.5, 0.5, 0.75)
         love.graphics.rectangle("fill", (ww/2-font:getWidth(input_text)/2)-10, wh/2, font:getWidth(input_text)+20, font:getHeight())
         love.graphics.setColor(1, 1, 1)
         love.graphics.print(input_text, ww/2-font:getWidth(input_text)/2, wh/2)
